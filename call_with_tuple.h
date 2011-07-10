@@ -28,9 +28,8 @@ or implied, of Christopher Allen Ogden.
 
 #pragma once
 #include <tuple>
-#include <cstdlib> // uint
 
-template <typename Ret, uint N>
+template <typename Ret, unsigned int N>
 struct CallWithTuple
 {
     template <typename Callable, typename... ArgsTuple, typename... Args>
