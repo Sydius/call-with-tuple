@@ -46,7 +46,7 @@ struct CallWithTuple<Ret, 0>
     template <typename Callable, typename... ArgsTuple, typename... Args>
     static Ret callWithTuple(Callable && callable, const std::tuple<ArgsTuple...> & tuple, Args && ... args)
     {
-        return callable(args...);
+        return callable(std::forward<Args>(args)...);
     }
 };
 
@@ -55,10 +55,11 @@ struct CallWithTuple<Ret, 0>
  *
  * @param callable  A function pointer or callable object.
  * @param tuple     Tuple containing arguments to be passed.
+ * @param extra...  Extra arguments to pass to the function
  * @return          Return value passed back from the call.
  */
-template <typename Ret, typename Callable, typename... ArgsTuple>
-Ret callWithTuple(Callable && callable, const std::tuple<ArgsTuple...> & tuple)
+template <typename Ret, typename Callable, typename... ArgsTuple, typename... Extra>
+Ret callWithTuple(Callable && callable, const std::tuple<ArgsTuple...> & tuple, Extra && ... extra)
 {
-    return CallWithTuple<Ret, sizeof...(ArgsTuple)>::callWithTuple(std::forward<Callable>(callable), tuple);
+    return CallWithTuple<Ret, sizeof...(ArgsTuple)>::callWithTuple(std::forward<Callable>(callable), tuple, std::forward<Extra>(extra)...);
 }
